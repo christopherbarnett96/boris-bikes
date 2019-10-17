@@ -20,7 +20,7 @@ class DockingStation
   def dock(bike)
     raise 'Docking station full' if full?
     @bikes << bike
-    @bike = bike
+    bike
   end
 
   private
@@ -32,4 +32,6 @@ class DockingStation
   def empty?
     @bikes.empty?
   end
+
+
 end
