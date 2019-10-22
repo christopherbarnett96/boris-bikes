@@ -3,15 +3,14 @@ require_relative 'docking_station'
 
 
 class Van
-
+  attr_reader :broken_bikes
   def initialize
-    @van_bikes = []
+    @broken_bikes = []
   end
 
-  def pick_up(bike)
-    raise 'Bike is already fixed' if bike.working?
-    @van_bikes << bike
-    bike
+  def pick_up(location)
+    location.bikes.each { |broken_bike|
+    @broken_bikes << broken_bike if broken_bike.working? == false }
   end
 
 end

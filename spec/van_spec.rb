@@ -5,26 +5,22 @@ require 'docking_station'
 describe Van do
 
   describe '#pick_up' do
-    it { is_expected.to respond_to(:pick_up)}
-
-    it 'Van picks up bikes' do
-      bike = double(:bike, working?: false)
-      expect(subject.pick_up(bike)).to eq bike
-    end
-
-    it 'Van picks up bikes from Docking Station' do
-      bike = double(:bike, working?: false)
-      docking_station = DockingStation.new
-      docked_bike = docking_station.dock(bike)
-      expect(subject.pick_up(docked_bike)).to eq docked_bike
-    end
 
     it 'Van Only picks up broken bikes' do
       bike = double(:bike, working?: true)
       docking_station = DockingStation.new
       docked_bike = docking_station.dock(bike)
-      expect{ subject.pick_up(docked_bike) }.to raise_error 'Bike is already fixed'
+      subject.pick_up(docking_station)
+      expect(subject.broken_bikes[0]).to eq nil
     end
-
+    it 'Van picks up all broken bikes from Docking Station' do
+      docking_station = DockingStation.new
+      bike1 = double(:bike, working?: false)
+      bike2 = double(:bike, working?: true)
+      3.times {docking_station.dock(bike1)}
+      3.times {docking_station.dock(bike2)}
+      subject.pick_up(docking_station)
+      expect(subject.broken_bikes).to eq [bike1,bike1,bike1]
+    end
   end
 end
